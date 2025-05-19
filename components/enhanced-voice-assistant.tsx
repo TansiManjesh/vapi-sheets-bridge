@@ -55,60 +55,31 @@ export function EnhancedVoiceAssistant() {
     if (typeof window !== "undefined") {
       // Check if browser supports speech recognition
       if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-        const SpeechRecognition: SpeechRecognitionStatic =
-          (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-        recognitionRef.current = new SpeechRecognition()
-        recognitionRef.current.continuous = true
-        recognitionRef.current.interimResults = true
-        recognitionRef.current.lang = "en-US"
+        try {
+          const SpeechRecognition: SpeechRecognitionStatic =
+            (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
 
-        recognitionRef.current.onresult = (event) => {
-          const transcript = Array.from(event.results)
-            .map((result) => result[0])
-            .map((result) => result.transcript)
-            .join("")
+          recognitionRef.current = new SpeechRecognition()
+          recognitionRef.current.continuous = true
+          recognitionRef.current.interimResults = true
+          recognitionRef.current.lang = "en-US"
 
-          setTranscript(transcript)
-        }
-
-        recognitionRef.current.onend = () => {
-          if (isListening) {
-            try {
-              recognitionRef.current?.start()
-            } catch (error) {
-              console.error("Error restarting speech recognition:", error)
-              setIsListening(false)
-              if (progressIntervalRef.current) {
-                clearInterval(progressIntervalRef.current)
-                progressIntervalRef.current = null
-              }
-            }
-          }
-        }
-
-        recognitionRef.current.onerror = (event) => {
-          console.error("Speech recognition error", event.error)
-          if (event.error === "no-speech") {
-            // This is a common error, don't show toast for this
-            return
-          }
-
-          setIsListening(false)
-          if (progressIntervalRef.current) {
-            clearInterval(progressIntervalRef.current)
-            progressIntervalRef.current = null
-          }
-
+          // Add more detailed error handling and logging
+          console.log("Speech recognition initialized successfully")
+          setupRecognitionHandlers()
+        } catch (error) {
+          console.error("Error initializing speech recognition:", error)
           toast({
-            title: "Error",
-            description: `Speech recognition error: ${event.error}`,
+            title: "Initialization Error",
+            description: "Could not initialize speech recognition. Please try a different browser.",
             variant: "destructive",
           })
         }
       } else {
+        console.error("Speech Recognition API not supported in this browser")
         toast({
           title: "Not Supported",
-          description: "Speech recognition is not supported in your browser.",
+          description: "Speech recognition is not supported in your browser. Please try Chrome or Edge.",
           variant: "destructive",
         })
       }
@@ -218,35 +189,80 @@ export function EnhancedVoiceAssistant() {
     }
 
     if (isListening) {
-      recognitionRef.current.stop()
-      if (transcript.trim()) {
-        handleSendMessage(transcript)
-      }
-      setTranscript("")
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current)
-        progressIntervalRef.current = null
+      try {
+        recognitionRef.current.stop()
+        console.log("Speech recognition stopped")
+        if (transcript.trim()) {
+          handleSendMessage(transcript)
+        }
+        setTranscript("")
+        if (progressIntervalRef.current) {
+          clearInterval(progressIntervalRef.current)
+          progressIntervalRef.current = null
+        }
+      } catch (error) {
+        console.error("Error stopping speech recognition:", error)
       }
     } else {
       try {
-        recognitionRef.current.start()
-        setListeningProgress(0)
-        progressIntervalRef.current = setInterval(() => {
-          setListeningProgress((prev) => {
-            if (prev >= 100) {
-              // Auto-submit after 10 seconds if still listening
-              if (isListening && transcript.trim()) {
-                handleSendMessage(transcript)
-                setTranscript("")
-                return 0
+        // Add a fallback mechanism
+        const startRecognition = () => {
+          try {
+            recognitionRef.current?.start()
+            console.log("Speech recognition started")
+            setListeningProgress(0)
+            progressIntervalRef.current = setInterval(() => {
+              setListeningProgress((prev) => {
+                if (prev >= 100) {
+                  if (isListening && transcript.trim()) {
+                    handleSendMessage(transcript)
+                    setTranscript("")
+                    return 0
+                  }
+                  return prev
+                }
+                return prev + 1
+              })
+            }, 100)
+          } catch (error) {
+            console.error("Error in startRecognition:", error)
+            // Try to recreate the recognition object
+            const SpeechRecognition: SpeechRecognitionStatic =
+              (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+
+            recognitionRef.current = new SpeechRecognition()
+            recognitionRef.current.continuous = true
+            recognitionRef.current.interimResults = true
+            recognitionRef.current.lang = "en-US"
+
+            // Set up event handlers again
+            setupRecognitionHandlers()
+
+            // Try again after a short delay
+            setTimeout(() => {
+              try {
+                recognitionRef.current?.start()
+                console.log("Speech recognition restarted after recreation")
+              } catch (secondError) {
+                console.error("Failed to restart recognition after recreation:", secondError)
+                toast({
+                  title: "Error",
+                  description: "Could not start speech recognition. Please reload the page.",
+                  variant: "destructive",
+                })
               }
-              return prev
-            }
-            return prev + 1
-          })
-        }, 100) // 10 seconds = 100 * 100ms
+            }, 100)
+          }
+        }
+
+        startRecognition()
       } catch (error) {
-        console.error("Error starting speech recognition:", error)
+        console.error("Error in toggleListening:", error)
+        toast({
+          title: "Error",
+          description: "Could not start speech recognition. Please try again.",
+          variant: "destructive",
+        })
       }
     }
     setIsListening(!isListening)
@@ -377,6 +393,59 @@ export function EnhancedVoiceAssistant() {
     speakText(welcomeMessage)
   }
 
+  // Add this new function to set up recognition handlers
+  const setupRecognitionHandlers = () => {
+    if (!recognitionRef.current) return
+
+    recognitionRef.current.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0])
+        .map((result) => result.transcript)
+        .join("")
+
+      setTranscript(transcript)
+      console.log("Transcript updated:", transcript)
+    }
+
+    recognitionRef.current.onend = () => {
+      console.log("Speech recognition ended naturally")
+      if (isListening) {
+        try {
+          recognitionRef.current?.start()
+          console.log("Speech recognition restarted after natural end")
+        } catch (error) {
+          console.error("Error restarting speech recognition:", error)
+          setIsListening(false)
+          if (progressIntervalRef.current) {
+            clearInterval(progressIntervalRef.current)
+            progressIntervalRef.current = null
+          }
+        }
+      }
+    }
+
+    recognitionRef.current.onerror = (event) => {
+      console.error("Speech recognition error", event.error)
+      if (event.error === "no-speech") {
+        // This is a common error, don't show toast for this
+        console.log("No speech detected")
+        return
+      }
+
+      setIsListening(false)
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+        progressIntervalRef.current = null
+      }
+
+      toast({
+        title: "Error",
+        description: `Speech recognition error: ${event.error}`,
+        variant: "destructive",
+      })
+    }
+  }
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -490,6 +559,29 @@ export function EnhancedVoiceAssistant() {
             </div>
             <Progress value={listeningProgress} className="w-full" />
             {transcript && <p className="text-sm text-gray-600 italic">{transcript}</p>}
+          </div>
+        )}
+
+        {!isListening && (
+          <div className="w-full flex space-x-2">
+            <input
+              type="text"
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+              placeholder="Type your message if voice isn't working..."
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E40521]"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && transcript.trim()) {
+                  handleSendMessage(transcript)
+                }
+              }}
+            />
+            <Button
+              onClick={() => transcript.trim() && handleSendMessage(transcript)}
+              disabled={isProcessing || !transcript.trim()}
+            >
+              Send
+            </Button>
           </div>
         )}
 
