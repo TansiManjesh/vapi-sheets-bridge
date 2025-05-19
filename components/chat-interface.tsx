@@ -66,9 +66,28 @@ export function ChatInterface() {
       }
 
       const data = await response.json()
+      const aiResponse = data.response
 
       // Add AI response to chat
-      setChatHistory((prev) => [...prev, { message: data.response, isUser: false, timestamp: new Date() }])
+      setChatHistory((prev) => [...prev, { message: aiResponse, isUser: false, timestamp: new Date() }])
+
+      // Record the conversation in Google Sheets
+      try {
+        await fetch("/api/record-chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userMessage,
+            aiResponse,
+            timestamp: new Date().toISOString(),
+          }),
+        })
+      } catch (recordError) {
+        console.error("Error recording conversation:", recordError)
+        // Don't show an error to the user if recording fails
+      }
     } catch (error) {
       console.error("Error sending message:", error)
       toast({
