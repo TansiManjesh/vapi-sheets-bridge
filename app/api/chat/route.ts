@@ -1,13 +1,21 @@
 import { NextResponse } from "next/server"
+import { detectIntent, detectCompany, getPromptTemplate, getSheetName } from "@/lib/intent-detection"
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { message, chatHistory } = body
+    const { message, chatHistory, companyId = "honda" } = body
 
     if (!message) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 })
     }
+
+    // Detect intent and company from message
+    const detectedCompany = body.companyId || detectCompany(message)
+    const intent = detectIntent(message, detectedCompany)
+
+    // Get the appropriate prompt template based on intent
+    const promptTemplate = getPromptTemplate(intent, detectedCompany)
 
     // Prepare the request to Flowise API
     const flowiseApiKey = process.env.FLOWISE_API_KEY
@@ -37,6 +45,9 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           question: message,
           history: formattedHistory.length > 1 ? formattedHistory.slice(0, -1) : [], // Exclude the current message from history
+          overrideConfig: {
+            systemMessage: promptTemplate, // Override the system message based on intent
+          },
         }),
       },
     )
@@ -51,6 +62,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       response: data.text || data.result || "I'm sorry, I couldn't process that request.",
+      intent: intent,
+      company: detectedCompany,
+      sheetName: getSheetName(intent, detectedCompany),
     })
   } catch (error) {
     console.error("Error in chat API route:", error)
