@@ -199,6 +199,27 @@ export function SetupGuide() {
             <div className="mt-6 space-y-4">
               <h3 className="text-lg font-medium">Troubleshooting Tools</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a
+                  href="/direct-test"
+                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
+                >
+                  <h4 className="font-medium">Direct Test</h4>
+                  <p className="text-sm text-gray-500">Try a direct connection to Google Sheets</p>
+                </a>
+                <a
+                  href="/create-new-sheet"
+                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
+                >
+                  <h4 className="font-medium">Create New Sheet</h4>
+                  <p className="text-sm text-gray-500">Create a fresh Google Sheet with the correct structure</p>
+                </a>
+                <a
+                  href="/alternative-actions"
+                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
+                >
+                  <h4 className="font-medium">Alternative Actions</h4>
+                  <p className="text-sm text-gray-500">Try alternative methods to connect to Google Sheets</p>
+                </a>
                 <a href="/check-credentials" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                   <h4 className="font-medium">Check Credentials Format</h4>
                   <p className="text-sm text-gray-500">Verify your Google service account credentials format</p>
@@ -214,10 +235,7 @@ export function SetupGuide() {
                   <h4 className="font-medium">Check Sheet Access</h4>
                   <p className="text-sm text-gray-500">Verify your service account can access the Google Sheet</p>
                 </a>
-                <a
-                  href="/fix-decoder-error"
-                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
-                >
+                <a href="/fix-decoder-error" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                   <h4 className="font-medium">Fix DECODER Error</h4>
                   <p className="text-sm text-gray-500">Fix the "DECODER routines::unsupported" error</p>
                 </a>
@@ -227,10 +245,6 @@ export function SetupGuide() {
                 >
                   <h4 className="font-medium">Test Fixed Credentials</h4>
                   <p className="text-sm text-gray-500">Test if your fixed credentials work properly</p>
-                </a>
-                <a href="/fix-credentials" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                  <h4 className="font-medium">Fix Credentials</h4>
-                  <p className="text-sm text-gray-500">Format your credentials properly for Vercel</p>
                 </a>
               </div>
             </div>
@@ -268,6 +282,26 @@ export function SetupGuide() {
                     <AlertTitle className="text-red-600">Connection Error</AlertTitle>
                     <AlertDescription>
                       {errorMessage || "Failed to connect to Google Sheets API. Please check your credentials."}
+                      <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                        <strong className="text-blue-700">Try these alternatives:</strong>
+                        <ul className="list-disc pl-5 mt-1 space-y-1 text-blue-700">
+                          <li>
+                            <a href="/direct-test" className="hover:underline">
+                              Use the Direct Test tool
+                            </a>
+                          </li>
+                          <li>
+                            <a href="/alternative-actions" className="hover:underline">
+                              Try Alternative Actions
+                            </a>
+                          </li>
+                          <li>
+                            <a href="/create-new-sheet" className="hover:underline">
+                              Create a new Google Sheet
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </AlertDescription>
                   </Alert>
                 )}
@@ -306,14 +340,26 @@ export function SetupGuide() {
                     <AlertTitle className="text-red-600">Submission Error</AlertTitle>
                     <AlertDescription>
                       {errorMessage || "Failed to submit test data. Please check your Google Sheets integration."}
-                      {errorMessage && errorMessage.includes("DECODER") && (
-                        <div className="mt-2">
-                          <p>This appears to be a DECODER error. Try using our:</p>
-                          <a href="/fix-decoder-error" className="text-blue-600 hover:underline block mt-1">
-                            DECODER Error Fix Tool
-                          </a>
-                        </div>
-                      )}
+                      <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                        <strong className="text-blue-700">Try these alternatives:</strong>
+                        <ul className="list-disc pl-5 mt-1 space-y-1 text-blue-700">
+                          <li>
+                            <a href="/direct-test" className="hover:underline">
+                              Use the Direct Test tool
+                            </a>
+                          </li>
+                          <li>
+                            <a href="/alternative-actions" className="hover:underline">
+                              Try Alternative Actions
+                            </a>
+                          </li>
+                          <li>
+                            <a href="/create-new-sheet" className="hover:underline">
+                              Create a new Google Sheet
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </AlertDescription>
                   </Alert>
                 )}
@@ -402,6 +448,27 @@ export function SetupGuide() {
                             )}
                           </>
                         )}
+
+                        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                          <strong className="text-blue-700">Try these alternatives:</strong>
+                          <ul className="list-disc pl-5 mt-1 space-y-1 text-blue-700">
+                            <li>
+                              <a href="/direct-test" className="hover:underline">
+                                Use the Direct Test tool
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/alternative-actions" className="hover:underline">
+                                Try Alternative Actions
+                              </a>
+                            </li>
+                            <li>
+                              <a href="/create-new-sheet" className="hover:underline">
+                                Create a new Google Sheet
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </AlertDescription>
                   </Alert>
