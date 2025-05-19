@@ -1,41 +1,17 @@
 import { NextResponse } from "next/server"
-import { google } from "googleapis"
+import { getConversations } from "@/lib/google-sheets"
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    // Create auth client using the separate environment variables
-    const auth = new google.auth.GoogleAuth({
-      credentials: {
-        client_email: process.env.GOOGLE_CLIENT_EMAIL,
-        private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      },
-      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
-    })
+    const { searchParams } = new URL(req.url)
+    const sheetName = searchParams.get("sheet") || "Conversations"
+    const limit = Number.parseInt(searchParams.get("limit") || "100")
 
-    const sheets = google.sheets({ version: "v4", auth })
-    const spreadsheetId = process.env.GOOGLE_SHEET_ID
-
-    // Get data from the "Conversations" sheet
-    const response = await sheets.spreadsheets.values.get({
-      spreadsheetId,
-      range: "Conversations!A:C",
-    })
-
-    const rows = response.data.values || []
-
-    // Skip the header row if it exists
-    const dataRows = rows.length > 0 && rows[0][0] === "Timestamp" ? rows.slice(1) : rows
-
-    // Format the data
-    const conversations = dataRows.map((row) => ({
-      timestamp: row[0] || "",
-      userMessage: row[1] || "",
-      aiResponse: row[2] || "",
-    }))
+    const conversations = await getConversations(sheetName, limit)
 
     return NextResponse.json({ conversations })
   } catch (error) {
-    console.error("Error fetching conversations:", error)
-    return NextResponse.json({ error: "Failed to fetch conversations" }, { status: 500 })
+    console.error("Error in get-conversations API:", error)
+    return NextResponse.json({ error: "Failed to retrieve conversations" }, { status: 500 })
   }
 }

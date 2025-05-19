@@ -1,109 +1,85 @@
 import { HondaLogo } from "@/components/honda-logo"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { MessageSquare, Settings } from "lucide-react"
+import { MessageSquare, Mic, BarChart3 } from "lucide-react"
 import Link from "next/link"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-center mb-6">
-          <HondaLogo className="h-12 w-auto" />
-        </div>
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Honda Customer Service AI</h1>
-          <p className="text-gray-600 mt-2">Intelligent customer service platform with multi-company support</p>
+    <main className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 dark:bg-gray-900">
+      <div className="container px-4 md:px-6">
+        <div className="flex flex-col items-center text-center space-y-4 mb-12">
+          <HondaLogo className="h-16 w-auto" />
+          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Honda Customer Service AI</h1>
+          <p className="max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+            Intelligent customer service platform with voice capabilities and multi-company support
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <Card className="flex flex-col h-full">
             <CardHeader>
-              <CardTitle>AI Assistant</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                AI Assistant
+              </CardTitle>
               <CardDescription>Chat with our intelligent assistant</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500 mb-4">
+            <CardContent className="flex-grow">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Get instant answers to your questions about sales, service, insurance, and more.
               </p>
             </CardContent>
             <CardFooter>
               <Link href="/assistant" className="w-full">
-                <Button className="w-full bg-[#E40521] hover:bg-[#c70419]">Chat Now</Button>
+                <Button className="w-full bg-[#E40521] hover:bg-[#c70419] text-white">Chat Now</Button>
               </Link>
             </CardFooter>
           </Card>
 
-          <Card>
+          <Card className="flex flex-col h-full">
             <CardHeader>
-              <CardTitle>Voice Assistant</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Mic className="h-5 w-5" />
+                Voice Assistant
+              </CardTitle>
               <CardDescription>Talk to our AI using your voice</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500 mb-4">
+            <CardContent className="flex-grow">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Speak naturally with our voice-enabled assistant for a hands-free experience.
               </p>
             </CardContent>
             <CardFooter>
               <Link href="/voice-assistant" className="w-full">
-                <Button className="w-full">Full Voice Assistant</Button>
+                <Button className="w-full" variant="outline">
+                  Voice Assistant
+                </Button>
               </Link>
             </CardFooter>
           </Card>
 
-          <Card>
+          <Card className="flex flex-col h-full">
             <CardHeader>
-              <CardTitle>Simple Voice Assistant</CardTitle>
-              <CardDescription>Basic voice assistant (more compatible)</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Analytics
+              </CardTitle>
+              <CardDescription>View conversation analytics</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500 mb-4">
-                A simplified voice interface that works on more browsers and devices.
+            <CardContent className="flex-grow">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                Analyze customer interactions and gain insights from conversation data.
               </p>
             </CardContent>
             <CardFooter>
-              <Link href="/simple-voice" className="w-full">
-                <Button className="w-full">Simple Voice Assistant</Button>
+              <Link href="/analytics" className="w-full">
+                <Button className="w-full" variant="outline">
+                  View Analytics
+                </Button>
               </Link>
             </CardFooter>
           </Card>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Admin Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Button asChild variant="outline" size="sm" className="justify-start">
-              <a href="/setup-conversations">
-                <Settings className="h-4 w-4 mr-2" />
-                Setup Conversation Sheets
-              </a>
-            </Button>
-
-            <Button asChild variant="outline" size="sm" className="justify-start">
-              <a href="/conversations">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                View Conversations
-              </a>
-            </Button>
-
-            <Button asChild variant="outline" size="sm" className="justify-start">
-              <a href="/test-flowise">
-                <Settings className="h-4 w-4 mr-2" />
-                Test Flowise Connection
-              </a>
-            </Button>
-
-            <Button asChild variant="outline" size="sm" className="justify-start">
-              <a href="/debug">
-                <Settings className="h-4 w-4 mr-2" />
-                Debug Tools
-              </a>
-            </Button>
-          </div>
-        </div>
-
-        <div className="text-center text-sm text-gray-500">
-          <p>© 2023 Honda Customer Service AI. All rights reserved.</p>
         </div>
       </div>
     </main>

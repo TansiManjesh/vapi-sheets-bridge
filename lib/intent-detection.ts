@@ -13,7 +13,7 @@ export type CompanyConfig = {
   >
 }
 
-// Define company configurations
+// Define company configurations - this is the export that was missing
 export const companies: Record<string, CompanyConfig> = {
   honda: {
     name: "Honda",
@@ -128,7 +128,6 @@ export const companies: Record<string, CompanyConfig> = {
       },
     },
   },
-  // Template for adding more companies
   toyota: {
     name: "Toyota",
     intents: {
