@@ -200,51 +200,37 @@ export function SetupGuide() {
               <h3 className="text-lg font-medium">Troubleshooting Tools</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <a
-                  href="/direct-test"
+                  href="/check-sheet-permissions"
                   className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
                 >
+                  <h4 className="font-medium">Check Sheet Permissions</h4>
+                  <p className="text-sm text-gray-500">Verify your service account has write access to the sheet</p>
+                </a>
+                <a
+                  href="/check-sheet-structure"
+                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
+                >
+                  <h4 className="font-medium">Check Sheet Structure</h4>
+                  <p className="text-sm text-gray-500">Verify your sheet has the correct structure</p>
+                </a>
+                <a href="/create-new-sheet" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                  <h4 className="font-medium">Create New Sheet</h4>
+                  <p className="text-sm text-gray-500">Create a fresh Google Sheet with the correct structure</p>
+                </a>
+                <a href="/direct-test" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                   <h4 className="font-medium">Direct Test</h4>
                   <p className="text-sm text-gray-500">Try a direct connection to Google Sheets</p>
                 </a>
                 <a
-                  href="/create-new-sheet"
-                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
-                >
-                  <h4 className="font-medium">Create New Sheet</h4>
-                  <p className="text-sm text-gray-500">Create a fresh Google Sheet with the correct structure</p>
-                </a>
-                <a
                   href="/alternative-actions"
-                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors bg-yellow-50"
+                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <h4 className="font-medium">Alternative Actions</h4>
                   <p className="text-sm text-gray-500">Try alternative methods to connect to Google Sheets</p>
                 </a>
-                <a href="/check-credentials" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                  <h4 className="font-medium">Check Credentials Format</h4>
-                  <p className="text-sm text-gray-500">Verify your Google service account credentials format</p>
-                </a>
-                <a href="/check-sheet-id" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                  <h4 className="font-medium">Check Sheet ID</h4>
-                  <p className="text-sm text-gray-500">Verify your Google Sheet ID is correctly formatted</p>
-                </a>
-                <a
-                  href="/check-sheet-access"
-                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <h4 className="font-medium">Check Sheet Access</h4>
-                  <p className="text-sm text-gray-500">Verify your service account can access the Google Sheet</p>
-                </a>
-                <a href="/fix-decoder-error" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                  <h4 className="font-medium">Fix DECODER Error</h4>
-                  <p className="text-sm text-gray-500">Fix the "DECODER routines::unsupported" error</p>
-                </a>
-                <a
-                  href="/test-fixed-credentials"
-                  className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <h4 className="font-medium">Test Fixed Credentials</h4>
-                  <p className="text-sm text-gray-500">Test if your fixed credentials work properly</p>
+                <a href="/fix-private-key" className="block p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                  <h4 className="font-medium">Fix Private Key</h4>
+                  <p className="text-sm text-gray-500">Fix the DECODER error by formatting your private key</p>
                 </a>
               </div>
             </div>
@@ -296,8 +282,8 @@ export function SetupGuide() {
                             </a>
                           </li>
                           <li>
-                            <a href="/create-new-sheet" className="hover:underline">
-                              Create a new Google Sheet
+                            <a href="/fix-private-key" className="hover:underline">
+                              Fix Private Key Format
                             </a>
                           </li>
                         </ul>
@@ -344,13 +330,13 @@ export function SetupGuide() {
                         <strong className="text-blue-700">Try these alternatives:</strong>
                         <ul className="list-disc pl-5 mt-1 space-y-1 text-blue-700">
                           <li>
-                            <a href="/direct-test" className="hover:underline">
-                              Use the Direct Test tool
+                            <a href="/check-sheet-permissions" className="hover:underline">
+                              Check Sheet Permissions
                             </a>
                           </li>
                           <li>
-                            <a href="/alternative-actions" className="hover:underline">
-                              Try Alternative Actions
+                            <a href="/check-sheet-structure" className="hover:underline">
+                              Check Sheet Structure
                             </a>
                           </li>
                           <li>
@@ -435,31 +421,20 @@ export function SetupGuide() {
                                 </a>
                               </p>
                             )}
-                            {debugResult.details && debugResult.details.includes("DECODER") && (
-                              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded">
-                                <p>
-                                  <strong>DECODER Error Detected:</strong> This specific error is often caused by
-                                  improper line breaks in the private key.
-                                </p>
-                                <a href="/fix-decoder-error" className="text-blue-600 hover:underline block mt-1">
-                                  Use our DECODER Error Fix Tool
-                                </a>
-                              </div>
-                            )}
                           </>
                         )}
 
                         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-                          <strong className="text-blue-700">Try these alternatives:</strong>
+                          <strong className="text-blue-700">Recommended Tools:</strong>
                           <ul className="list-disc pl-5 mt-1 space-y-1 text-blue-700">
                             <li>
-                              <a href="/direct-test" className="hover:underline">
-                                Use the Direct Test tool
+                              <a href="/check-sheet-permissions" className="hover:underline">
+                                Check Sheet Permissions
                               </a>
                             </li>
                             <li>
-                              <a href="/alternative-actions" className="hover:underline">
-                                Try Alternative Actions
+                              <a href="/check-sheet-structure" className="hover:underline">
+                                Check Sheet Structure
                               </a>
                             </li>
                             <li>

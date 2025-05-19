@@ -1,5 +1,6 @@
 import { FeedbackForm } from "@/components/feedback-form"
 import { HondaLogo } from "@/components/honda-logo"
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
@@ -13,6 +14,12 @@ export default function Home() {
           <p className="text-gray-600 mt-2">Help us improve our service by sharing your experience</p>
         </div>
         <FeedbackForm />
+        <div className="mt-8 text-center">
+          <p className="text-gray-600 mb-4">Need immediate assistance? Chat with our AI assistant</p>
+          <Button asChild className="bg-[#E40521] hover:bg-[#c70419]">
+            <a href="/assistant">Chat with Honda AI Assistant</a>
+          </Button>
+        </div>
       </div>
     </main>
   )
