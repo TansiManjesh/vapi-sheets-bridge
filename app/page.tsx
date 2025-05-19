@@ -1,7 +1,8 @@
 import { HondaLogo } from "@/components/honda-logo"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { MessageSquare, BarChart3, Settings, FileText } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { MessageSquare, Settings } from "lucide-react"
+import Link from "next/link"
 
 export default function Home() {
   return (
@@ -15,59 +16,56 @@ export default function Home() {
           <p className="text-gray-600 mt-2">Intelligent customer service platform with multi-company support</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" />
-                AI Assistant
-              </CardTitle>
-              <CardDescription>Chat with our intelligent AI assistant</CardDescription>
+            <CardHeader>
+              <CardTitle>AI Assistant</CardTitle>
+              <CardDescription>Chat with our intelligent assistant</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-500 mb-4">
                 Get instant answers to your questions about sales, service, insurance, and more.
               </p>
-              <Button asChild className="w-full bg-[#E40521] hover:bg-[#c70419]">
-                <a href="/assistant">Chat Now</a>
-              </Button>
             </CardContent>
+            <CardFooter>
+              <Link href="/assistant" className="w-full">
+                <Button className="w-full bg-[#E40521] hover:bg-[#c70419]">Chat Now</Button>
+              </Link>
+            </CardFooter>
           </Card>
 
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Feedback Form
-              </CardTitle>
-              <CardDescription>Share your experience with us</CardDescription>
+            <CardHeader>
+              <CardTitle>Voice Assistant</CardTitle>
+              <CardDescription>Talk to our AI using your voice</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-500 mb-4">
-                Help us improve our service by providing your valuable feedback.
+                Speak naturally with our voice-enabled assistant for a hands-free experience.
               </p>
-              <Button asChild variant="outline" className="w-full">
-                <a href="/feedback">Submit Feedback</a>
-              </Button>
             </CardContent>
+            <CardFooter>
+              <Link href="/voice-assistant" className="w-full">
+                <Button className="w-full">Full Voice Assistant</Button>
+              </Link>
+            </CardFooter>
           </Card>
 
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                Analytics
-              </CardTitle>
-              <CardDescription>View conversation analytics</CardDescription>
+            <CardHeader>
+              <CardTitle>Simple Voice Assistant</CardTitle>
+              <CardDescription>Basic voice assistant (more compatible)</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-500 mb-4">
-                Analyze customer interactions and gain insights from conversation data.
+                A simplified voice interface that works on more browsers and devices.
               </p>
-              <Button asChild variant="outline" className="w-full">
-                <a href="/analytics">View Analytics</a>
-              </Button>
             </CardContent>
+            <CardFooter>
+              <Link href="/simple-voice" className="w-full">
+                <Button className="w-full">Simple Voice Assistant</Button>
+              </Link>
+            </CardFooter>
           </Card>
         </div>
 
